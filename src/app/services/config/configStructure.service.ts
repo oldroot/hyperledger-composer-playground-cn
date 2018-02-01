@@ -21,11 +21,11 @@ export class Config {
     this.title = 'Hyperledger Composer';
     this.banner = ['Hyperledger', 'Composer Playground'];
     this.links = {
-      docs: <string> 'https://hyperledger.github.io/composer/introduction/introduction.html',
-      tutorial: <string> 'https://hyperledger.github.io/composer/tutorials/playground-tutorial.html',
+      docs: <string> 'http://fabric.docs.cloudchain.cn/ComposerDocs/tutorials_playground-tutorial/',
+      tutorial: <string> 'http://fabric.docs.cloudchain.cn/ComposerDocs/tutorials_playground-tutorial/',
       community: <string> 'https://hyperledger.github.io/composer/support/support-index.html',
       github: <string> 'https://github.com/hyperledger/composer',
-      install: <string> 'https://hyperledger.github.io/composer/installing/installing-index.html',
+      install: <string> 'http://fabric.docs.cloudchain.cn/ComposerDocs/installing_development-tools/',
       legal: <string> 'https://www.apache.org/licenses/LICENSE-2.0'
     };
     this.analyticsID = null;

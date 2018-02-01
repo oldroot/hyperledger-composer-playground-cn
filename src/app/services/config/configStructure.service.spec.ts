@@ -63,8 +63,8 @@ describe('Config', () => {
           };
 
           service.links = {
-                              docs: 'https://hyperledger.github.io/composer/introduction/introduction.html',
-                              tutorial: 'https://hyperledger.github.io/composer/tutorials/playground-tutorial.html',
+                              docs: 'http://fabric.docs.cloudchain.cn/ComposerDocs/tutorials_playground-tutorial/',
+                              tutorial: 'http://fabric.docs.cloudchain.cn/ComposerDocs/tutorials_playground-tutorial/',
                               community: 'https://hyperledger.github.io/composer/support/support-index.html',
                               github: 'https://github.com/hyperledger/composer',
                               install: 'https://hyperledger.github.io/composer/installing/installing-index.html',
@@ -75,10 +75,10 @@ describe('Config', () => {
 
           service.links.should.deep.equal({
                                               docs: 'My Docs',
-                                              tutorial: 'https://hyperledger.github.io/composer/tutorials/playground-tutorial.html',
+                                              tutorial: 'http://fabric.docs.cloudchain.cn/ComposerDocs/tutorials_playground-tutorial/',
                                               community: 'https://hyperledger.github.io/composer/support/support-index.html',
                                               github: 'https://github.com/hyperledger/composer',
-                                              install: 'https://hyperledger.github.io/composer/installing/installing-index.html',
+                                              install: 'http://fabric.docs.cloudchain.cn/ComposerDocs/installing_development-tools/',
                                               legal: 'https://www.apache.org/licenses/LICENSE-2.0'
                                           });
       });
@@ -105,11 +105,11 @@ describe('Config', () => {
         service.title.should.deep.equal('Hyperledger Composer');
         service.banner.should.deep.equal(['Hyperledger', 'Composer Playground']);
         service.links.should.deep.equal({
-                                            docs: 'https://hyperledger.github.io/composer/introduction/introduction.html',
-                                            tutorial: 'https://hyperledger.github.io/composer/tutorials/playground-tutorial.html',
+                                            docs: 'http://fabric.docs.cloudchain.cn/ComposerDocs/tutorials_playground-tutorial/',
+                                            tutorial: 'http://fabric.docs.cloudchain.cn/ComposerDocs/tutorials_playground-tutorial/',
                                             community: 'https://hyperledger.github.io/composer/support/support-index.html',
                                             github: 'https://github.com/hyperledger/composer',
-                                            install: 'https://hyperledger.github.io/composer/installing/installing-index.html',
+                                            install: 'http://fabric.docs.cloudchain.cn/ComposerDocs/installing_development-tools/',
                                             legal: 'https://www.apache.org/licenses/LICENSE-2.0'
                                         });
 
