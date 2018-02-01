@@ -1,0 +1,52 @@
+<section class="import-identity" fileDragDrop (fileDragDropFileAccepted)="fileAccepted($event)"
+         (fileDragDropFileRejected)="fileRejected($event)"
+         (fileDragDropDragOver)="fileDetected($event)" (fileDragDropDragLeave)="fileLeft($event)"
+         [maxFileSize]="maxFileSize" [supportedFileTypes]="supportedFileTypes">
+    <header class="drawer-header">
+        <h1>导入业务网络卡片</h1>
+        <p>选择 Composer 业务网络 (.card file) 并添加至我的业务网络：</p>
+
+        <button class="icon modal-exit" (click)="activeDrawer.dismiss();">
+            <svg class="ibm-icon" aria-hidden="true">
+                <use xlink:href="#icon-close_new"></use>
+            </svg>
+        </button>
+    </header>
+    <section class="drawer-body">
+        <div class="import-card" *ngIf="!identityCard">
+            <file-importer (fileAccepted)="fileAccepted($event)" (fileRejected)="fileRejected($event)"
+                           [expandInput]="expandInput"
+                           [ngClass]="{'expandFile': expandInput}" [svgName]="'#icon-Card_Upload'"
+                           [maxFileSize]="maxFileSize" [supportedFileTypes]="supportedFileTypes"></file-importer>
+        </div>
+
+        <div class="current-card" *ngIf="identityCard">
+            <identity-card [identity]="identityCard" [preview]="true" [showDismissIcon]="true"
+                           (onDismiss)="removeFile()">
+            </identity-card>
+        </div>
+        <div class="card-name" *ngIf="identityCard">
+            <label for="cardName"><h3>被导入卡片名称：</h3></label>
+            <input id="cardName" [ngClass]="{'error-underline': !cardNameValid}" type="text"
+                   [ngModel]="cardName"
+                   (ngModelChange)="setCardName($event)"
+                   placeholder="eg. admin@{{identityCard.getBusinessNetworkName()}}">
+            <div *ngIf="!cardNameValid" class="error-message">卡片名称必须唯一！</div>
+        </div>
+    </section>
+    <footer class="drawer-footer">
+        <button type="button" class="secondary" (click)="activeDrawer.dismiss();">
+            <span>取消</span>
+        </button>
+        <button type="button" class="primary" (click)="import();" [disabled]="!identityCard || !cardNameValid">
+            <span *ngIf="!importInProgress">导入</span>
+            <div *ngIf="importInProgress" class="ibm-spinner-indeterminate small loop">
+                <div class="loader">
+                    <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="circle-path" cx="50" cy="50" r="20"/>
+                    </svg>
+                </div>
+            </div>
+        </button>
+    </footer>
+</section>

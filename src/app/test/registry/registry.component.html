@@ -1,0 +1,77 @@
+<div *ngIf="_registry" class="resource-header">
+    <div class="resource-header-left">
+        <h1 *ngIf="!isHistorian()">{{_registry.name}}</h1>
+    </div>
+    <div *ngIf="!isHistorian()">
+        <button type="button" class="registry" (click)="openNewResourceModal()">
+            <span>+ 新建 {{_registry.registryType}}</span>
+        </button>
+    </div>
+</div>
+<div *ngIf="_registry" class="resource-list" [ngClass]="{'transaction-list' : isHistorian()}">
+    <div *ngIf="!isHistorian()">
+        <div class="title" [ngClass]="{'resource-empty' : !resources || resources.length === 0}">
+            <div class="id">ID</div>
+            <div class="data">数据</div>
+        </div>
+        <div *ngFor="let resource of resources" class="resource-container">
+            <div checkOverFlow [changed]="resource.getIdentifier()"
+                 [expanded]="resource.getIdentifier() === expandedResource"
+                 (hasOverFlow)="hasOverFlow($event, resource)"
+                 class="resource-content" [ngClass]="{'expanded' : resource.getIdentifier() === expandedResource}">
+                <div class="id">{{resource.getIdentifier()}}</div>
+                <pre #resourcedata
+                     [ngClass]="{'gradient' : resource.getIdentifier() !== expandedResource && overFlowedResources[resource.getIdentifier()], 'tiny-gradient' : resource.getIdentifier() === expandedResource || !overFlowedResources[resource.getIdentifier()]}"
+                     class="data">{{serialize(resource)}}</pre>
+                <div lass="resource-icon">
+                    <button type="button" class="icon" (click)="editResource(resource)">
+                        <svg class="ibm-icon" aria-hidden="true">
+                            <use xlink:href="#icon-edit_32"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="resource-icon">
+                    <button type="button" class="icon" (click)="openDeleteResourceModal(resource)">
+                        <svg class="ibm-icon" aria-hidden="true">
+                            <use xlink:href="#icon-bin_icon"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <button *ngIf="overFlowedResources[resource.getIdentifier()]" class="expand" type="button"
+                    (click)="expandResource(resource)">
+                {{resource.getIdentifier() === expandedResource ? 'Collapse' : 'Show All'}}
+            </button>
+        </div>
+    </div>
+
+    <table *ngIf="resources && resources.length > 0 && isHistorian()">
+        <thead [ngClass]="{'tbody-scrolled' : tableScrolled}">
+        <tr>
+            <th class="normal-column">日期, 时间</th>
+            <th class="normal-column">条目类型</th>
+            <th class="normal-column">参与者</th>
+            <th class="narrow-column"></th>
+        </tr>
+        </thead>
+        <tbody id="transactiontbody" checkScroll (hasScroll)="updateTableScroll($event)">
+        <tr *ngFor="let resource of resources">
+            <td class="normal-column truncate-text">{{ resource.transactionTimestamp | date:'y-MM-dd, HH:mm:ss' }}</td>
+            <td class="normal-column truncate-text"><span placement="top" container="body" ngbTooltip="{{resource.transactionType || null}}">{{ resource.transactionType ? resource.transactionType.substring(resource.transactionType.lastIndexOf('.') + 1) : 'TBC' }}</span></td>
+            <td class="normal-column truncate-text"><span placement="top" container="body" ngbTooltip="{{resource.participantInvoking ? resource.participantInvoking.$namespace + '.' + resource.participantInvoking.$type : null}}">{{ resource.participantInvoking ?
+                resource.participantInvoking.$identifier + ' (' + resource.participantInvoking.$type + ')'  : 'none' }}</span>
+            </td>
+            <td class="narrow-column"><a href="#" (click)="viewTransactionData(resource)">查看记录</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!resources || resources.length === 0" class="no-resources">
+        <svg class="ibm-icon" aria-hidden="true">
+            <use xlink:href="#icon-Emptiness"></use>
+        </svg>
+        <h3>资源库为空！</h3>
+        <p *ngIf="!isHistorian()">点击页面上方的【新建】，在此资源库中创建资源</p>
+        <p *ngIf="isHistorian()">使用左侧菜单提交一笔交易</p>
+    </div>
+</div>

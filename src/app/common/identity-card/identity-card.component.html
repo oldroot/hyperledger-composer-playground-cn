@@ -1,0 +1,80 @@
+<section class="identity-card">
+    <header>
+        <button *ngIf="showDismissIcon" type="button" class="icon dismiss"
+                (click)="dismiss()">
+            <svg class="ibm-icon" aria-hidden="true">
+                <use xlink:href="#icon-close_new"></use>
+            </svg>
+        </button>
+    </header>
+    <section *ngIf="identity" class="user-details">
+        <div class="image-placeholder">
+            <span class="initials">{{getInitials()}}</span>
+            <div class="role-icon" title="{{getRoles()}}" *ngIf="getRoles()">
+                <svg class="ibm-icon vertical-top">
+                    <use xlink:href="#icon-tool"></use>
+                </svg>
+            </div>
+        </div>
+        <div class="user-name" title="{{cardRef}}">{{cardRef}}</div>
+    </section>
+    <section *ngIf="!preview && identity" class="actions">
+        <button [disabled]="indestructible" type="button" class="action circular delete"
+                (click)="delete()">
+            <svg class="ibm-icon vertical-top" aria-hidden="true">
+                <use xlink:href="#icon-bin_icon"></use>
+            </svg>
+        </button>
+        <button [disabled]="'web' === identity.getConnectionProfile().type" type="button" class="action circular export"
+                (click)="export()">
+            <svg class="ibm-icon vertical-top" aria-hidden="true">
+                <use xlink:href="#icon-download_32"></use>
+            </svg>
+        </button>
+    </section>
+    <section *ngIf="showSpecial" class="sample-section">
+        <div class="sample-icon">
+            <svg class="ibm-icon vertical-top">
+                <use xlink:href="#icon-konnichiwa"></use>
+            </svg>
+        </div>
+        <h2>Hello, Composer!</h2>
+        <p>基础示例网络入门指导<span [hidden]="link === ''">，或者查看 <a
+            href="{{ link }}" target="_blank">Playground
+            开发指南</a></span></p>
+    </section>
+    <section *ngIf="preview" class="connection-profile-details">
+        <h3>连接配置</h3>
+        <p>{{identity.getConnectionProfile().name}}</p>
+    </section>
+    <section *ngIf="identity" class="user-name-details">
+        <h3>用户账号</h3>
+        <p title="{{identity.getUserName()}}">{{identity.getUserName()}}</p>
+    </section>
+    <section *ngIf="identity" class="business-network-details">
+        <h3>业务网络</h3>
+        <p [class.none]="!identity.getBusinessNetworkName()" title="{{identity.getBusinessNetworkName() || 'none'}}">
+            {{identity.getBusinessNetworkName() || 'none'}}</p>
+    </section>
+    <section *ngIf="showSpecial" class="business-network-details">
+        <h3>业务网络</h3>
+        <p title="basic-sample-network">basic-sample-network</p>
+    </section>
+    <footer>
+        <button *ngIf="!preview && identity" [disabled]="!identity.getBusinessNetworkName()" type="button"
+                class="action connect"
+                (click)="connect()">
+            <span>开始连接</span>
+            <svg class="ibm-icon" aria-hidden="true">
+                <use xlink:href="#icon-forward_16"></use>
+            </svg>
+        </button>
+        <button *ngIf="showSpecial" type="button" class="action connect"
+                (click)="deploySample()">
+            <span>开始</span>
+            <svg class="ibm-icon" aria-hidden="true">
+                <use xlink:href="#icon-forward_16"></use>
+            </svg>
+        </button>
+    </footer>
+</section>

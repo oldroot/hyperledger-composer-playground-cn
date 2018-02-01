@@ -1,0 +1,205 @@
+<div class="choose-network">
+    <h2>部署新的业务网络</h2>
+    <section>
+        <h3 class="title">1. 基础信息</h3>
+        <div class="information">
+            <table class="no-shadow">
+                <colgroup>
+                    <col span="1" style="width: 35%;">
+                    <col span="1" style="width: 65%;">
+                </colgroup>
+                <tr>
+                    <th>
+                        <label for="import-businessNetworkName"><h3>指定业务网络名称:</h3>
+                        </label>
+                    </th>
+                    <td>
+                        <input [ngClass]="{'error-underline': !networkNameValid}" type="text"
+                               id="import-businessNetworkName" [ngModel]="networkName"
+                               (ngModelChange)="setNetworkName($event)"
+                               placeholder="eg commodity-trading">
+                        <div *ngIf="!networkNameValid" class="error-message">名称必须是不包含空格的小写字母和数字。
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="import-businessNetworkDescription"><h3>描述业务网络用途：</h3></label>
+                    </th>
+                    <td>
+                         <textarea rows="4" id="import-businessNetworkDescription" [(ngModel)]="networkDescription"
+                                   placeholder="eg Track the exchange of Commodities between traders on a blockchain"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label for="import-cardName"><h3>指定创建的网络管理员卡片名称</h3></label>
+                    </th>
+                    <td>
+                        <input [ngClass]="{'error-underline': !cardNameValid}" type="text"
+                               id="import-cardName" [ngModel]="cardName"
+                               (ngModelChange)="setCardName($event)"
+                               placeholder="eg. admin@{{networkName}}">
+                        <div *ngIf="!cardNameValid" class="error-message">卡片名称必须唯一</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <section fileDragDrop (fileDragDropFileAccepted)="fileAccepted($event)"
+             (fileDragDropFileRejected)="fileRejected($event)"
+             (fileDragDropDragOver)="fileDetected($event)" (fileDragDropDragLeave)="fileLeft($event)"
+             [maxFileSize]="maxFileSize" [supportedFileTypes]="supportedFileTypes">
+        <h3 class="title">2. 模型网络启动模板</h3>
+        <div>
+            <h3 class="sub-title">选择起始的业务网络定义：</h3>
+            <p>选择一个示例用于练习、启动新项目或导入您前期的工作</p>
+            <div class="github-spinner" *ngIf="npmInProgress">
+                <div class="ibm-spinner-indeterminate medium loop">
+                    <div class="loader">
+                        <svg class="circular" viewBox="25 25 50 50">
+                            <circle class="circle-path" cx="50" cy="50" r="20"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!npmInProgress" class="sample-network-list-container">
+                <div class="sample-network-list" [ngClass]="{'selected-network' : sampleNetworks[0].name === chosenNetwork.name}" id="base-samples">
+                    <div class="sample-network-list-item" *ngIf="sampleNetworks.length>1"
+                         [ngClass]="{'selected-network' : sampleNetworks[1].name === chosenNetwork.name}"
+                         (click)="selectNetwork(sampleNetworks[1])">
+                        <img *ngIf="sampleNetworks[1].networkImage" src="{{sampleNetworks[1].networkImage}}">
+                        <svg *ngIf="!sampleNetworks[1].networkImage">
+                            <use xlink:href="#icon-default-network"></use>
+                        </svg>
+                        <div class="sample-network-name">{{sampleNetworks[1].name}}</div>
+                    </div>
+                    <div class="sample-network-list-item"
+                         [ngClass]="{'selected-network' : sampleNetworks[0].name === chosenNetwork.name}"
+                         (click)="selectNetwork(sampleNetworks[0])">
+                        <svg>
+                            <use xlink:href="#icon-default-network"></use>
+                        </svg>
+                        <div class="sample-network-name">{{sampleNetworks[0].name}}</div>
+                    </div>
+                    <div *ngIf="sampleDropped" class="sample-network-list-item"
+                         [ngClass]="{'selected-network' : uploadedNetwork.name === chosenNetwork.name}"
+                         (click)="selectNetwork(uploadedNetwork)">
+                        <button class="icon close-dropped" (click)="closeSample()">
+                            <svg class="ibm-icon">
+                                <use xlink:href="#icon-close_24"></use>
+                            </svg>
+                        </button>
+                        <img *ngIf="uploadedNetwork && uploadedNetwork.networkImage"
+                             src="{{uploadedNetwork.networkImage}}">
+                        <svg *ngIf="!uploadedNetwork || !uploadedNetwork.networkImage">
+                            <use xlink:href="#icon-default-network"></use>
+                        </svg>
+                        <div class="sample-network-name">{{uploadedNetwork.name}}</div>
+                    </div>
+                    <file-importer *ngIf="!sampleDropped" class="sample-network-list-item file-importer"
+                                   (fileAccepted)="fileAccepted($event)" (fileRejected)="fileRejected($event)"
+                                   [expandInput]="expandInput"
+                                   [ngClass]="{'expandFile': expandInput}" [svgName]="'#icon-BNA_Upload'"
+                                   [maxFileSize]="maxFileSize"
+                                   [supportedFileTypes]="supportedFileTypes"></file-importer>
+                </div>
+
+                <h3>npm 示例</h3>
+
+                <div class="sample-network-list" id="npm-samples" *ngIf="sampleNetworks.length>1">
+                    <div class="sample-network-list-item"
+                         [ngClass]="{'selected-network' : sampleNetwork.name === chosenNetwork.name}"
+                         *ngFor=" let sampleNetwork of sampleNetworks | slice:2; let networkIndex=index"
+                         (click)="selectNetwork(sampleNetwork)">
+                        <img *ngIf="sampleNetwork.networkImage" src="{{sampleNetwork.networkImage}}">
+                        <svg *ngIf="!sampleNetwork.networkImage">
+                            <use xlink:href="#icon-default-network"></use>
+                        </svg>
+                        <div class="sample-network-name">{{sampleNetwork.name}}</div>
+                    </div>
+                </div>
+                <div *ngIf="sampleNetworks.length==1">
+                    <p class="error-message">错误: 无法获取任何示例网络！</p>
+                </div>        
+            </div>
+        </div>
+    </section>
+    <section *ngIf="showCredentials">
+        <h3 class="title">3. 网络管理员凭据</h3>
+        <div class="information">
+            <div class="credentials">
+                <h3>部署此业务网络之前，您必须提供遵循以下格式的一个凭据</h3>
+                <p>该凭据用于访问已部署的业务网络</p>
+                <credentials (credentials)="updateCredentials($event)"></credentials>
+            </div>
+        </div>
+    </section>
+</div>
+<div *ngIf="!npmInProgress" class="chosen-network">
+    <div class="chosen-network-info">
+        <div class="image">
+            <img class="animated-image" *ngIf="chosenNetwork && chosenNetwork.networkImageanimated"
+                 src="{{chosenNetwork.networkImageanimated}}"/>
+            <img class="animated-image" *ngIf="!chosenNetwork || !chosenNetwork.networkImageanimated"
+                 src="../../assets/svg/other/default-network-animated.svg"/>
+        </div>
+        <div>
+            <section>
+                <h3 class="network-desc" *ngIf="networkNameValid">{{networkName ? networkName : 'Business Network
+                    Name'}}</h3>
+                <h3 class="network-desc" *ngIf="!networkNameValid" style="color:red">{{networkName ? networkName :
+                    'Business Network Name'}}</h3>
+                <p class="network-desc">{{networkDescription ? networkDescription : 'Business network description will
+                    be previewed here when
+                    entered in the basic information section.'}}</p>
+            </section>
+            <section>
+                <div class="title">
+                    连接配置
+                </div>
+                <h3>{{currentConnectionProfile}}</h3>
+            </section>
+            <section class="github-spinner" *ngIf="npmInProgress">
+                <div class="ibm-spinner-indeterminate medium loop">
+                    <div class="loader">
+                        <svg class="circular" viewBox="25 25 50 50">
+                            <circle class="circle-path" cx="50" cy="50" r="20"/>
+                        </svg>
+                    </div>
+                </div>
+            </section>
+            <section *ngIf="!npmInProgress">
+                <div>
+                    <div class="title">
+                        基于
+                    </div>
+                    <h3>{{chosenNetwork.name}}</h3>
+                    <p>{{chosenNetwork.description}}</p>
+                </div>
+
+                <div *ngIf="currentBusinessNetworkPromise | async as bn">
+                    <p class="network-info">
+                        <span>包含:</span>
+                        {{bn.participants.length}} Participant {{bn.participants.length == 1 ? "Type" : "Types"}},
+                        {{bn.assets.length}} Asset {{bn.assets.length == 1 ? "Type" : "Types"}}, and
+                        {{bn.transactions.length}} Transaction {{bn.transactions.length == 1 ? "Type" : "Types"}}
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="deploy">
+        <button id="import_confirm" [disabled]="isInvalidDeploy()" type="button"
+                class="primary" (click)="deploy()">
+            <div *ngIf="!deployInProgress">
+                <span>部署</span>
+            </div>
+            <div *ngIf="deployInProgress" class="ibm-spinner-indeterminate small loop">
+                <div class="loader">
+                    <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="circle-path" cx="50" cy="50" r="20"/>
+                    </svg>
+                </div>
+            </div>
+        </button>
+    </div>
+</div>

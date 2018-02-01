@@ -1,0 +1,67 @@
+<section class="main-view">
+    <div class="main-view-content">
+        <div class="flex">
+            <div class="flex-container">
+                <h1 class="flex">我的ID {{businessNetworkName}}</h1>
+                <button type="button" class="secondary" (click)="issueNewId()">
+                    <span>分配新 ID</span>
+                </button>
+            </div>
+
+            <div class="identity-title">
+                <div class="selected-border"></div>
+                <div class="id">ID 名称</div>
+                <div class="status">状态</div>
+            </div>
+            <div class="identity" *ngFor="let cardRef of cardRefs" (dblclick)="setCurrentIdentity(cardRef)">
+                <div class="selected-border"
+                     [ngClass]="{'selected-border--selected': cardRef === currentIdentity}"></div>
+                <div class="id">
+                    {{identityCards.get(cardRef).getUserName()}}
+                </div>
+                <div class="flex" *ngIf="cardRef===currentIdentity">
+                    正常
+                </div>
+                <div class="flex" *ngIf="cardRef!==currentIdentity">
+                    <i>我的钱包</i>
+                </div>
+                <div class="actions" *ngIf="cardRef!==currentIdentity">
+                    <button class="clear" (click)="setCurrentIdentity(cardRef)">启用</button>
+                    <button class="clear" (click)="openRemoveModal(cardRef); $event.stopPropagation()">移除</button>
+                </div>
+            </div>
+        </div>
+        <div class="flex">
+            <div class="flex-container">
+                <h1 class="flex">所有 IDs  {{ businessNetworkName }}</h1>
+            </div>
+
+            <div class="identity-title">
+                <div class="selected-border"></div>
+                <div class="id cell-24">ID 名称</div>
+                <div class="issued-to cell-24">分配</div>
+                <div class="status cell-24">状态</div>
+                <div class="actions cell-24"></div>
+            </div>
+            <div class="identity" *ngFor="let id of allIdentities">
+                <div class="selected-border"
+                     [ngClass]="{'selected-border--selected': id.ref === currentIdentity}"></div>
+                <div class="id cell-24">
+                    {{ id.name }}
+                </div>
+                <div class="issued-to cell-24">
+                    <span placement="top" container="body" ngbTooltip="{{ id.participant.$namespace }}.{{ id.participant.$type }}">{{ id.participant.$identifier }} ({{ id.participant.$type }})</span>
+                </div>
+                <div class="status cell-24">
+                    {{ id.state }}
+                </div>
+                <div class="cell-24">
+                    <div class="actions" *ngIf="id.ref !== currentIdentity && id.state!=='REVOKED'">
+                        <button class="clear" (click)="revokeIdentity(id)">撤回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</section>

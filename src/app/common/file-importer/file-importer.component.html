@@ -1,0 +1,15 @@
+  <input id="file-importer_input" type="file" (change)="onFileChange($event)">
+  <div *ngIf="!expandInput">
+    <svg class="ibm-icon" aria-hidden="true">
+      <use xlink:href="#icon-upload"></use>
+    </svg>
+      <span>拖拽文件到此处或者 <span class="underline">选择</span></span>
+  </div>
+  <div *ngIf="expandInput">
+    <svg class="ibm-icon" aria-hidden="true">
+      <use [attr.xlink:href]="svgName"></use>
+    </svg>
+    <div class="centre-text">在此处拖拽并上传</div>
+    <div class="max-file-size centre-text">文件大小上限 {{(maxFileSize/1024)/1024}}mb</div>
+  </div>
+

@@ -1,0 +1,87 @@
+<div class="import" fileDragDrop (fileDragDropFileAccepted)="fileAccepted($event)"
+     (fileDragDropFileRejected)="fileRejected($event)"
+     (fileDragDropDragOver)="fileDetected($event)" (fileDragDropDragLeave)="fileLeft($event)"
+     [maxFileSize]="maxFileSize" [supportedFileTypes]="supportedFileTypes">
+  <div class="modal-header">
+    <h1>添加文件</h1>
+    <button id="add-file_exit" class="icon modal-exit" (click)="activeModal.dismiss()">
+      <svg class="ibm-icon" aria-hidden="true">
+        <use xlink:href="#icon-close_new"></use>
+      </svg>
+    </button>
+  </div>
+  <section class="modal-body">
+    <span>上传本地计算机的文件...</span>
+    <file-importer (fileAccepted)="fileAccepted($event)" (fileRejected)="fileRejected($event)" [expandInput]="expandInput"
+                   [maxFileSize]="maxFileSize" [supportedFileTypes]="supportedFileTypes" [ngClass]="{'expandFile': expandInput}" [svgName]="'#icon-CTO_JS_Upload'"></file-importer>
+    <div class="chosen-file" *ngIf="expandInput && currentFile">
+      <div class="file-info">
+        <div class="flex-container">
+          <svg class="ibm-icon" aria-hidden="true">
+            <use xlink:href="#icon-ACL_File" *ngIf="fileType==='acl'"></use>
+            <use xlink:href="#icon-CTO_File" *ngIf="fileType==='cto'"></use>
+            <use xlink:href="#icon-JS_File" *ngIf="fileType==='js'"></use>
+            <use xlink:href="#icon-MD_File" *ngIf="fileType==='md'"></use>
+            <use xlink:href="#icon-QRY_File" *ngIf="fileType==='qry'"></use>
+          </svg>
+          <div class="file-title">
+            <div class="title">{{currentFileName}}</div>
+            <div *ngIf="fileType==='cto'">
+              <span>{{currentFile.getAssetDeclarations().length}} 资产</span>
+              <span>{{currentFile.getParticipantDeclarations().length}} 参与者</span>
+              <span>{{currentFile.getTransactionDeclarations().length}} 交易</span>
+            </div>
+            <div *ngIf="fileType==='js'">
+              <span>{{currentFile.getFunctionDeclarations().length}} 功能</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button role="button" type="button" class="action" (click)="removeFile()">移除文件</button>
+        </div>
+      </div>
+    </div>
+    <form class="file-types-list" #f="ngForm" *ngIf="!expandInput">
+      <div class="file-types-list-item">
+        <input type="radio" id="file-type-cto" name="file-type" [(ngModel)]="fileType" value="cto"
+               (change)="changeCurrentFileType()">
+        <label class="radio-label" for="file-type-cto">模型文件 (.cto)</label>
+        <div class="description">
+          使用Hyperledger Composer 建模语言定义资产、参与者和交易。
+        </div>
+      </div>
+      <div class="file-types-list-item">
+        <input type="radio" id="file-type-js" name="file-type" [(ngModel)]="fileType" value="js"
+               (change)="changeCurrentFileType()">
+        <label class="radio-label" for="file-type-js">脚本文件 (.js)</label>
+        <div class="description">
+          使用 JavaScript定义交易执行逻辑
+        </div>
+      </div>
+      <div class="file-types-list-item" [ngClass]="{'selection-disabled': queryExists()}">
+        <input [disabled]="queryExists()" type="radio" id="file-type-qry" name="file-type-qry" [(ngModel)]="fileType" value="qry"
+               (change)="changeCurrentFileType()">
+        <label class="radio-label" for="file-type-qry">查询文件 (.qry)</label>
+        <div class="description">
+          此处进行查询定义。 (注意: 您可能只拥有其中的某一个 per .bna).
+        </div>
+      </div>
+      <div class="file-types-list-item" [ngClass]="{'selection-disabled': aclExists()}">
+        <input [disabled]="aclExists()" type="radio" id="file-type-acl" name="file-type-acl" [(ngModel)]="fileType" value="acl"
+               (change)="changeCurrentFileType()">
+        <label class="radio-label" for="file-type-acl">连接控制文件 (permissions.acl)</label>
+        <div class="description">
+          此处定义连接控制。 (注意: 您可能只拥有其中的某一个 per .bna).
+        </div>
+      </div>
+    </form>
+  </section>
+  <footer>
+    <button id="add-file_cancel" type="button" class="secondary" (click)="activeModal.dismiss();">
+      <span>取消</span>
+    </button>
+    <button id="add-file_confirm"type="button" class="primary" (click)="activeModal.close(currentFile);" [disabled]="!currentFile">
+      <span>增加</span>
+    </button>
+  </footer>
+</div>

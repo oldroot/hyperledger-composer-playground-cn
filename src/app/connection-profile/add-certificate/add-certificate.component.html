@@ -1,0 +1,37 @@
+<div class="add-certificate" fileDragDrop (fileDragDropFileAccepted)="fileAccepted($event)"
+     (fileDragDropFileRejected)="fileRejected($event)"
+     (fileDragDropDragOver)="fileDetected($event)" (fileDragDropDragLeave)="fileLeft($event)"
+     [maxFileSize]="maxFileSize" [supportedFileTypes]="supportedFileTypes">
+  <div class="modal-header">
+    <h1>导入证书</h1>
+    <button class="icon modal-exit" (click)="activeModal.dismiss()">
+      <svg class="ibm-icon" aria-hidden="true">
+        <use xlink:href="#icon-close_new"></use>
+      </svg>
+    </button>
+  </div>
+  <section class="modal-body">
+    <span>上传本地的证书文件 (.pem) </span>
+    <file-importer (dragFileAccepted)="fileAccepted($event)" [expandInput]="expandInput"
+                   [ngClass]="{'expandFile': expandInput}" [svgName]="'#icon-CTO_JS_Upload'"></file-importer>
+    <span>或者将认证证书粘贴到下方</span>
+    <form class="import-certificate" #f="ngForm">
+      <div class="row">
+        <div class="property">
+          证书*
+        </div>
+        <div class="value">
+          <textarea name="addedCertificate" rows="5" [(ngModel)]="addedCertificate"></textarea>
+        </div>
+      </div>
+    </form>
+  </section>
+  <footer>
+    <button type="button" class="secondary" (click)="activeModal.dismiss();">
+      <span>取消</span>
+    </button>
+    <button type="button" class="primary" (click)="addCertificate()" [disabled]="!addedCertificate">
+      <span>添加</span>
+    </button>
+  </footer>
+</div>

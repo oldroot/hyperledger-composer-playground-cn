@@ -1,0 +1,34 @@
+<perfect-scrollbar class="readme" *ngIf="editorType === 'readme' && _previewReadmeActive" [innerHTML]="previewContent">
+</perfect-scrollbar>
+
+<div class="scrollbar-padding" *ngIf="editorType === 'code'">
+  <codemirror id="editor-file_CodeMirror" debounce name="editorCodeMirror" [(ngModel)]="editorContent"
+            [config]="(editorType === 'readme') ? mdCodeConfig : codeConfig" (debounceFunc)="onCodeChanged()" [delay]="700" width="100%" height="100%" ngDefaultControl>
+  </codemirror>
+</div>
+
+<div class="scrollbar-padding" *ngIf="!_previewReadmeActive && editorType === 'readme'">
+  <codemirror id="editor-file_CodeMirror" debounce name="editorCodeMirror" [(ngModel)]="editorContent"
+            [config]="(editorType === 'readme') ? mdCodeConfig : codeConfig" (debounceFunc)="onCodeChanged()" [delay]="700" width="100%" height="100%" ngDefaultControl>
+  </codemirror>
+</div>
+
+<div class="alert-area" role="alert" *ngIf="editorType !== 'readme' && currentError">
+  <svg class="ibm-icon" aria-hidden="true">
+    <use xlink:href="#icon-spell_check_error"></use>
+  </svg>
+  <div class="alert-message" role="alert">
+    <h3>出现错误!</h3>
+    <p>{{currentError}}</p>
+  </div>
+</div>
+
+<div class="alert-area" role="alert" *ngIf="(editorType === 'code' || !_previewReadmeActive) && !currentError">
+  <svg class="ibm-icon" aria-hidden="true">
+    <use xlink:href="#icon-spell_check"></use>
+  </svg>
+  <div class="alert-message" role="alert">
+    <h3>一切正常!</h3>
+    <p>此处显示代码中所检测到的问题。</p>
+  </div>
+</div>

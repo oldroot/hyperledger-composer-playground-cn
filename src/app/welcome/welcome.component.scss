@@ -1,0 +1,31 @@
+@import '../../assets/styles/base/_colors.scss';
+@import '../../assets/styles/base/_variables.scss';
+
+welcome-modal {
+  .welcome {
+    .modal-header {
+      background-color: $white;
+    }
+
+    section.modal-body {
+      align-items: center;
+      text-align: center;
+
+      p {
+        padding: 0 $space-xlarge;
+      }
+    }
+
+    footer {
+      background-color: $white;
+      justify-content: center;
+      flex-direction: column;
+      padding-bottom: $space-large;
+
+      tutorial-link {
+        margin-top: $space-large;
+      }
+    }
+  }
+}
+

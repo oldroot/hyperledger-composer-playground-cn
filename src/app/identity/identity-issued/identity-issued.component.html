@@ -1,0 +1,59 @@
+<section class="identity-issued">
+  <header class="modal-header">
+    <h1>分配身份</h1>
+    <button class="icon modal-exit" (click)="activeModal.close()">
+      <svg class="ibm-icon" aria-hidden="true">
+       <use xlink:href="#icon-close_new"></use>
+      </svg>
+    </button>
+  </header>
+  <div class="modal-body">
+    <identity-card [identity]="newCard" [preview]="true"></identity-card>
+
+    <div class="new-card-options">
+      <ngb-accordion [closeOthers]="true" activeIds="option-1">
+          <ngb-panel id="option-1">
+            <ng-template ngbPanelTitle>
+              <svg class="bx--accordion__arrow" width="12" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
+                <path d="M0 10.6L4.7 6 0 1.4 1.4 0l6.1 6-6.1 6z"></path>
+              </svg>
+              <span>自己使用</span>
+            </ng-template>
+            <ng-template ngbPanelContent>
+                <p>将业务网络卡片添加至您的钱包，以启用您的新身份</p>
+                <label for="cardName"><h3>业务网络卡片名称</h3></label>
+                <input type="text" [ngModel]="cardName" id="cardName" name="cardName"
+                       (ngModelChange)="setCardName($event)"
+                       autocomplete="off" placeholder="e.g. {{newCard.getUserName() + '@' + newCard.getBusinessNetworkName()}}">
+                <div *ngIf="!cardNameValid" class="error-message">卡片名称必须唯一</div>
+                <div class="actions">
+                  <button type="button" class="primary" (click)="addToWallet()" [disabled]="!cardNameValid">添加至钱包</button>
+                </div>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel id="option-2">
+              <ng-template ngbPanelTitle>
+                  <svg class="bx--accordion__arrow" width="12" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
+                    <path d="M0 10.6L4.7 6 0 1.4 1.4 0l6.1 6-6.1 6z"></path>
+                  </svg>
+                  <span>发送给其他人</span>
+                </ng-template>
+            <ng-template ngbPanelContent>
+                <p>其他的Playground 用户可以将业务网络卡片导入到他的钱包，以启用新身份。</p>
+                <div class="actions">
+                  <button type="button" class="primary" (click)="export();">导出业务网络卡片</button>
+                </div>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+    </div>
+  </div>
+  <footer>
+    <p class="footer-text">
+      <svg class="standard-icon" aria-hidden="true">
+        <use xlink:href="#icon-warn_32"></use>
+      </svg>
+      基于安全方面考虑，新的身份只能被登记一次。
+    </p>
+  </footer>
+</section>

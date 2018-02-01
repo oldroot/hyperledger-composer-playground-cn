@@ -1,0 +1,56 @@
+@import '../../../assets/styles/base/colors';
+@import '../../../assets/styles/base/variables';
+
+identity-issued-modal {
+  .identity-issued {
+    .modal-body {
+      display: flex;
+      flex-direction: row;
+      overflow-y: auto;
+
+      .new-card-options {
+        position: absolute;
+        left: 275 + $space-medium; // the size of an ID card + padding
+        padding: 0 $space-medium $space-medium $space-medium;
+
+        dl.enrollment-credentials {
+          margin-left: $space-medium;
+
+          display: flex;
+          flex-flow: row wrap;
+
+          dt, dd {
+            margin: 0;
+            flex: 0 0 50%;
+          }
+
+          dt {
+            font-weight: 700;
+            flex: 0 0 33%;
+          }
+
+          dd {
+            flex: 0 0 66%;
+          }
+        }
+
+        .actions {
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: $space-medium;
+        }
+      }
+    }
+
+    footer {
+      svg {
+        fill: $error-colour-1;
+        vertical-align: text-top;
+      }
+
+      p.footer-text {
+        flex: 1;
+      }
+    }
+  }
+}

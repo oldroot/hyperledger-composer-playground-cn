@@ -1,0 +1,54 @@
+<section class="create-identity-card">
+    <div *ngIf="creatingWithProfile" class="create-card">
+        <h1>创建业务网络卡片</h1>
+        <connection-profile (profileUpdated)="finishedEditingConnectionProfile($event)"
+                            [connectionProfile]="wrappedConnectionProfile"></connection-profile>
+    </div>
+    <div *ngIf="editingCredentials">
+        <edit-card-credentials (idCardAdded)="completeCardAddition($event)"
+                      [connectionProfile]="wrappedConnectionProfile.profile"></edit-card-credentials>
+    </div>
+    <div *ngIf="creatingIdCard" class="create-card">
+        <h1>创建业务网络卡片</h1>
+        <section class="profiles">
+            <div class="description upper"><b>选择区块链部署方式</b></div>
+            <div>
+                <form #optionForm="ngForm">
+                    <div class="create-route" *ngIf="connectionProfileRefs.length>=2">
+                        <p>为区块链（基于Composer开发）创建业务网络卡片 ：</p>
+                        <div class="file-types-list">
+                            <div class="file-types-list-item" *ngFor="let profileRef of connectionProfileRefs | slice:0: connectionProfileRefs.length-1; let i=index">
+                                    <input type="radio" id="{{ i }}" name="file-type"
+                                        (change)="setConnectionProfile(profileRef)"/>
+                                    <label class="radio-label" for="{{ i }}"><h3>{{connectionProfileNames.get(profileRef)}}</h3></label>
+                                    <div class="description"><p>{{ connectionProfiles.get(profileRef).description ? connectionProfiles.get(profileRef).description : ' ' }}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="create-route">
+                        <p>为区块链（从未连接过）创建业务网络卡片 ：</p>
+                        <div class="file-types-list">
+                            <div class="file-types-list-item">
+                                <input type="radio" id="new-v1" name="file-type"
+                                    (change)="setConnectionProfile('_$v1')">
+                                <label class="radio-label" for="new-v1"><h3>Hyperledger Fabric v1.0</h3></label>
+                                <div class="description"><p>连接一个新的 v1.0 区块链</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <footer>
+            <button type="button" class="secondary" (click)="cancelCreate();">
+                <span>取消</span>
+            </button>
+            <button *ngIf = "newConnection" type="button" class="primary" (click)="createWithNewProfile()" [disabled]="!wrappedConnectionProfile">
+                <span>下一步</span>
+            </button>
+            <button *ngIf = "!newConnection" type="button" class="primary" (click)="createWithExistingProfile()" [disabled]="!wrappedConnectionProfile">
+                <span>下一步</span>
+            </button>
+        </footer>
+    </div>
+</section>

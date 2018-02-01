@@ -1,0 +1,21 @@
+<div class="version-check">
+  <div class="modal-header">
+    <button class="icon modal-exit" (click)="activeModal.close()">
+      <svg class="ibm-icon" aria-hidden="true">
+        <use xlink:href="#icon-close_new"></use>
+      </svg>
+    </button>
+  </div>
+  <section class="modal-body">
+    <h1>无效版本!</h1>
+    <svg class="ibm-icon" aria-hidden="true">
+      <use xlink:href="#icon-Emptiness"></use>
+    </svg>
+    <p>可能您以前用过一个老版本的 Composer Playground!</p>
+  </section>
+  <footer>
+    <button type="button" class="primary centre" (click)="clearLocalStorage();activeModal.close();">
+      <span>清除本地存储</span>
+    </button>
+  </footer>
+</div>

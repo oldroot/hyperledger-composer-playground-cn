@@ -1,0 +1,29 @@
+@import '../../../assets/styles/base/colors';
+@import '../../../assets/styles/base/variables';
+
+import-identity {
+    .drawer-body {
+        overflow-y: auto;
+        height: calc(100vh - 112px - 64px - 32px - 47px - 32px - 32px);
+    }
+
+    .import-card, .current-card, .card-name {
+        padding: 0 $space-large 0 $space-large;
+    }
+
+    .current-card, .card-name {
+        background-color: $fourth-highlight;
+        padding: $space-large;
+
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .card-name {
+        flex-direction: column;
+
+        label {
+            margin-bottom: $space-smedium;
+        }
+    }
+}
