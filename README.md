@@ -1,4 +1,9 @@
+# 本项目对Composer-Playground进行汉化，项目中只包含源代码和配置文件，汉化方法可参考【开发指南.md】
+
 # Composer-Playground
+
+
+
 The UI for Hyperledger Composer
 
 Check that the versions of 
